@@ -75,11 +75,11 @@ public class InterruptingClassLoader extends URLClassLoader {
 		
 		// This modifies the test class adding interrupts
 		// TODO: work out where the hell MultiMethodAdapter is
-		// TraceClassVisitor tcv = new TraceClassVisitor(new PrintWriter(System.out));
+		//TraceClassVisitor tcv = new TraceClassVisitor(new PrintWriter(System.out));
 		
 		ClassInterrupter ci = new ClassInterrupter(cw,id);
 		// this reads the original test code
-		ClassReader cr = new ClassReader(name);
+		ClassReader cr = new ClassReader(getResourceAsStream(name.replace('.','/') + ".class"));
 		cr.accept(ci, 0);
 
 		return defineClass(name, cw.toByteArray());

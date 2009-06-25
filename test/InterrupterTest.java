@@ -8,7 +8,7 @@ public class InterrupterTest {
 
 	public static void main(String[] args) throws Throwable {
 		InterruptingClassLoader cl = new InterruptingClassLoader(1);
-		Interrupter.setLimit(1, 5);
+		Interrupter.setLimit(1, 20);
 		
 		Class<?> test = cl.loadClass("Test");
 		final Method[] methods = test.getMethods();

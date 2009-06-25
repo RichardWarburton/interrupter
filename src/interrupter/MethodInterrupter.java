@@ -25,6 +25,11 @@ import org.objectweb.asm.MethodVisitor;
 
 public class MethodInterrupter extends MethodAdapter {
 
+	@Override
+	public void visitLabel(Label lb) {
+		super.visitLabel(lb);
+		generate();
+	}
 	private int stackCounter;
 	private final int id;
 	

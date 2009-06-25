@@ -1,3 +1,7 @@
 .classpath
 .project
 .settings
+build
+build
+bin
+dist

@@ -19,4 +19,9 @@ package interrupter;
 
 public class InterruptingError extends Error {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3597316467288820524L;
+
 }

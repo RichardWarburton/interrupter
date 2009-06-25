@@ -19,6 +19,11 @@ package interrupter;
 
 public class InvalidJavaException extends RuntimeException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1522134259311027508L;
+
 	public InvalidJavaException() {
 		super("You cannot call interrupter.Interrupter.interupt() within interruptable code.");
 	}

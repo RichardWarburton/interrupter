@@ -1,7 +1,4 @@
-import interrupter.Interrupter;
 import interrupter.InterruptingError;
-
-
 
 public class Test {
 
@@ -9,7 +6,7 @@ public class Test {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Interrupter.interrupt(0);
+		//Interrupter.interrupt(0);
 		int x = 0;
 		try {
 			x = 5;

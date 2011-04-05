@@ -2,6 +2,6 @@
 .project
 .settings
 build
-build
 bin
 dist
+target

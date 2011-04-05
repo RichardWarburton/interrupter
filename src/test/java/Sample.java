@@ -1,4 +1,4 @@
-public class Test {
+public class Sample {
 
 	/**
 	 * @param args

@@ -21,3 +21,8 @@ Caveats
 
 The performance properties of this approach haven't been tested.  Aside from the direct overhead of introducing regular method calls, this makes methods larger.  If a method becomes too large, then the JVM won't inline it.  I have undertaken no empirical study of the performance properties, so you should use at your own risk.
 
+Example
+-------
+
+The maven test directory contains an example of how to use the `InterruptingClassLoader`, along with an example non-terminating program that is interrupted when the test is run.
+

@@ -12,22 +12,19 @@ import org.junit.Test;
 public class InterrupterTest {
 
 	@Test
-	public void testSimple() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		InterruptingClassLoader cl = new InterruptingClassLoader(1);
+	public void testSimple() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, InvocationTargetException,
+			SecurityException, NoSuchMethodException {
+		final InterruptingClassLoader cl = new InterruptingClassLoader(1);
 		Interrupter.setLimit(1, 20);
 
-		Class<?> test = cl.loadClass("Sample");
-		final Method[] methods = test.getMethods();
-		for (Method method : methods) {
-			if(method.getName().equals("main")) {
-				final String[] invokeArgs = {};
-				try {
-					method.invoke(null,new Object[]{invokeArgs});
-					fail("Should've exploded");
-				} catch (InvocationTargetException e) {
-					assertEquals(InterruptingError.class, e.getCause().getClass());
-				}
-			}
+		final Class<?> sampleClass = cl.loadClass("Sample");
+		final Method method = sampleClass.getMethod("main", String[].class);
+		final String[] invokeArgs = {};
+		try {
+			method.invoke(null, new Object[] { invokeArgs });
+			fail("Should've exploded");
+		} catch (final InvocationTargetException e) {
+			assertEquals(InterruptingError.class, e.getCause().getClass());
 		}
 	}
 

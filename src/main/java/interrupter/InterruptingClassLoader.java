@@ -16,6 +16,7 @@
     along with Interrupter.  If not, see <http://www.gnu.org/licenses/>.
  */
 package interrupter;
+
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -25,64 +26,60 @@ import org.objectweb.asm.ClassWriter;
 
 public class InterruptingClassLoader extends URLClassLoader {
 
-	private static final String[] protectedPackages = {
-		"java.",
-		"System",
-		"interrupter.Interrupter",
-	};
-	
+	private static final String[] protectedPackages = { "java.", "System", "interrupter.Interrupter", };
+
 	private final int id;
-	
-	public static boolean checkName(String name) {
-		for(String pkg : protectedPackages) {
-			if(name.startsWith(pkg)) {
+
+	public static boolean checkName(final String name) {
+		for (final String pkg : protectedPackages) {
+			if (name.startsWith(pkg)) {
 				return false;
 			}
 		}
 		return true;
+
 	}
-	
+
 	@Override
-	public synchronized Class<?> loadClass(String name) throws ClassNotFoundException {
-		if(checkName(name)) {
+	public synchronized Class<?> loadClass(final String name) throws ClassNotFoundException {
+		if (checkName(name)) {
 			try {
 				return loadInterruptedClassByName(name);
-			} catch (IOException e) {
-				throw new ClassNotFoundException("",e);
+			} catch (final IOException e) {
+				throw new ClassNotFoundException("", e);
 			}
-		} else {
-			// TODO: debug name
-			return super.loadClass(name);
 		}
+		// TODO: debug name
+		return super.loadClass(name);
 	}
-	
-	public Class<?> defineClass(String name, byte[] b) {
+
+	public Class<?> defineClass(final String name, final byte[] b) {
 		return super.defineClass(name, b, 0, b.length);
 	}
 
-	public InterruptingClassLoader(final int id, URL[] urls) {
+	public InterruptingClassLoader(final int id, final URL[] urls) {
 		super(urls);
 		this.id = id;
 	}
-	
+
 	public InterruptingClassLoader(final int id) {
-		this(id,new URL[]{});
+		this(id, new URL[] {});
 	}
 
-	public Class<?> loadInterruptedClassByName(String name) throws IOException {
+	public Class<?> loadInterruptedClassByName(final String name) throws IOException {
 		// write to a bytearray wrapped inside this
-		ClassWriter cw = new ClassWriter(0);
-		
+		final ClassWriter cw = new ClassWriter(0);
+
 		// This modifies the test class adding interrupts
 		// TODO: work out where the hell MultiMethodAdapter is
-		//TraceClassVisitor tcv = new TraceClassVisitor(new PrintWriter(System.out));
-		
-		ClassInterrupter ci = new ClassInterrupter(cw,id);
+		// TraceClassVisitor tcv = new TraceClassVisitor(new PrintWriter(System.out));
+
+		final ClassInterrupter ci = new ClassInterrupter(cw, id);
 		// this reads the original test code
-		ClassReader cr = new ClassReader(getResourceAsStream(name.replace('.','/') + ".class"));
+		final ClassReader cr = new ClassReader(getResourceAsStream(name.replace('.', '/') + ".class"));
 		cr.accept(ci, 0);
 
 		return defineClass(name, cw.toByteArray());
 	}
-	
+
 }
